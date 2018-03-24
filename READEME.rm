@@ -1,0 +1,63 @@
+官方提供的 kylinpy 功能有限, 本项目扩充
+http://kylin.apache.org/docs/howto/howto_use_restapi.html#authentication
+
+
+pip install enum
+
+##################################################
+
+1.查看cube job 信息
+./bin/kylin_cmd.sh -o jobs -p kevin_test -c order_test_cube -d debug
+
+2.build cube
+./bin/kylin_cmd.sh -o rebuild -p kevin_test -c order_test_cube -st 2018-03-01 -et 2018-03-20 -d debug
+
+
+####################################################
+
+以下是官方提供的kylinpy
+如果需要 pip install --upgrade kylinpy
+
+Kylinpy举例子:
+kylinpy command options
+
+Command	Option	Description
+auth	 	get user auth info
+cube_columns	--name	list cube columns
+cube_desc	--name	show cube description
+cube_names	 	list cube names
+cube_sql	--name	get sql of cube
+model_desc	--name	show model description
+projects	 	list all projects
+query	--sql	sql query
+table_columns	--name	list table columns
+table_names	 	list all table names
+users	 	list all users, need admin role, KAP only
+
+Kylinpy命令行工具示例
+访问Apache Kylin
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api2 --debug auth
+
+访问选定cube所有的维度信息
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug cube_columns --name kylin_sales_cube
+
+访问选定的cube描述
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug cube_desc --name order_test_cube
+
+访问所有cube名称
+kylinpy -h 172.16.1.36 -u ADMIN -p KYLIN --project kevin_test --api1 --debug cube_names
+
+访问选定cube的SQL定义
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug cube_sql --name order_test_cube
+
+列出Kylin中所有项目
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug projects
+
+访问选定表所有的维度信息
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug table_columns --name KYLIN_SALES
+
+访问所有表名
+kylinpy -h 172.16.1.36 -u ADMIN -p KYLIN --project kevin_test --api1 table_names
+
+访问所选模型信息
+kylinpy -h 172.16.1.36 -P 7070 -u ADMIN -p KYLIN --project kevin_test --api1 --debug model_

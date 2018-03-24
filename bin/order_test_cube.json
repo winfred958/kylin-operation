@@ -1,0 +1,16 @@
+{
+  "uuid" : "46d55641-582e-4860-864f-035d22893abc",
+  "last_modified" : 1521869158291,
+  "version" : "2.3.0.20500",
+  "name" : "order_test_cube",
+  "owner" : "ADMIN",
+  "descriptor" : "order_test_cube",
+  "display_name" : "order_test_cube",
+  "cost" : 50,
+  "status" : "READY",
+  "segments" : [ ],
+  "create_time_utc" : 1521680991380,
+  "cuboid_bytes" : null,
+  "cuboid_bytes_recommend" : null,
+  "cuboid_last_optimized" : 0
+}
