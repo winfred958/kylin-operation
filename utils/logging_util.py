@@ -28,8 +28,6 @@ class LogUtil(object):
         self.name = name
         self.file_path = file_path
 
-    #     def __init__(self, name="kylin_operation", file_path="log/kylin_operation.log"):
-
     def __new__(cls, *args, **kwargs):
         if LogUtil.__log is None:
             LogUtil.__log = object.__new__(cls, *args, **kwargs)
