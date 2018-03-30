@@ -39,11 +39,12 @@ class KylinJobService(object):
         job_instance = kylinjob.get_job_info_by_cube(project_name=project_name, cube_name=cube_name)
         for re in job_instance:
             self.log.info(
-                "{{uuid: {uuid}, cube_name: {cube_name},  progress: {progress}, last_modified: {last_modified}}}".format(
+                "{{uuid: {uuid}, cube_name: {cube_name},  progress: {progress}, last_modified: {last_modified} ({date})}}".format(
                     uuid=re.uuid,
                     cube_name=re.related_cube,
                     progress=re.progress,
-                    last_modified=re.last_modified
+                    last_modified=re.last_modified,
+                    date=""
                 )
             )
         return job_instance

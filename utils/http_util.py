@@ -18,6 +18,7 @@ import json
 import urllib
 import urllib2
 
+import requests
 from enum import Enum
 
 from utils.logging_util import LogUtil
@@ -57,39 +58,48 @@ class HttpClientUtil(object):
         :return:
         """
         result = None
-        # 设置 http header
-        for key, value in self.headers.items():
-            self.request.add_header(key, value)
-        # 设置 http request method
-        self.request.get_method = lambda: self.method
-        # 设置 http data
-        if self.data is not None:
-            if self.method == EnmuHttpSchema.GET:
-                self.request.add_data(urllib.urlencode(self.data))
-            else:
-                self.request.add_data(self.data)
         # 发送请求
+
+        self.log.info("=== http method ===: {}".format(self.method))
+        self.log.info("=== http headers ===: {}".format(self.headers))
+        self.log.info("=== http data ===: {}".format(self.data))
+
         try:
-            # self.log.info("request url = %s, data = %s", self.url, json.dumps(self.data).__str__())
-            self.log.info("curl -X{method} {url} -d '{data}'".format(
-                method=self.method,
-                url=self.url,
-                data=json.dumps(self.data).__str__()
-            ))
-            result = urllib2.urlopen(self.request)
+            self.echo_log()
+            if self.method == EnmuHttpSchema.GET:
+                result = requests.get(url=self.url, params=self.data, headers=self.headers)
+            if self.method == EnmuHttpSchema.POST:
+                result = requests.post(url=self.url, data=self.data, headers=self.headers)
+            if self.method == EnmuHttpSchema.PUT:
+                result = requests.put(url=self.url, data=self.data, headers=self.headers)
         except urllib2.HTTPError as e:
             self.log.error("request url error: %s : %s", self.url, e.__str__())
-        return result
+        if result is None:
+            result = {}
+        return result.json()
+
+    def echo_log(self):
+        self.log.info("curl -X{method} {url} -d '{data}'".format(
+            method=self.method,
+            url=self.url,
+            data=json.dumps(self.data).__str__()
+        ))
 
 
 if __name__ == '__main__':
     data = """
-    {"sql":"SELECT GOODS_ID FROM  DIM_COMM.DIM_V_GOODS_INFO ", "offset":1000, "limit":"100", "acceptPartial":true, "project": "EDW_CUBE"}
-    """
+    {
+    "sql": "SELECT FACT_WEB_TRACK_APP_DOWNLOAD.ACTION_DATE, COUNT(*) AS \"二维码访问量\" FROM TRACK_DW_FACT.FACT_WEB_TRACK_APP_DOWNLOAD WHERE FACT_WEB_TRACK_APP_DOWNLOAD.ACTION_DATE > '2018-03-01' GROUP BY FACT_WEB_TRACK_APP_DOWNLOAD.ACTION_DATE ORDER BY ACTION_DATE",
+    "offset": 0,
+    "limit": 50000,
+    "acceptPartial": true,
+    "project": "ec_track_log_v1"
+    }
+    """.replace("\n", "")
 
     hcu = HttpClientUtil(
         schema="http",
-        host="47.88.50.90",
+        host="47.254.42.95",
         port=7070,
         context_path="kylin",
         path="api/query",
@@ -101,7 +111,7 @@ if __name__ == '__main__':
         method="POST"
     )
 
-    response = json.loads(hcu.get_response().read())
+    response = hcu.get_response()
     print(response)
 
     results = response.get("results")
@@ -112,3 +122,4 @@ if __name__ == '__main__':
         print(response.get("partial"))
 
     print "+++++++++++++++++++++++++++++"
+

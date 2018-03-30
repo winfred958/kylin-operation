@@ -35,9 +35,9 @@ def operation_request(parameter):
         log.info(" --operation {} :: 没有设置操作类型, 正常退出".format(parameter.operation))
         return -1
     if DEBUG == parameter.debug:
-        debug(parameter)
+        return debug(parameter)
     else:
-        run(parameter)
+        return run(parameter)
 
 
 def run(parameter):
@@ -49,10 +49,13 @@ def run(parameter):
 
 
 def debug(parameter):
+    result = None
     if parameter.operation == OPERATION_REBUILD:
         log.debug(OPERATION_REBUILD)
-        return kylinCubeService.cube_build(parameter)
+        result = kylinCubeService.cube_build(parameter)
     elif parameter.operation == OPERATION_JOBS:
         log.debug(OPERATION_JOBS)
-        return kylinJobService.get_job_info(parameter)
-    return 0
+        result = kylinJobService.get_job_info(parameter)
+    if result is not None:
+        return 0
+    return -1

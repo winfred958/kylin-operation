@@ -22,7 +22,7 @@ LOG_DIR = "log"
 
 KYLIN_CONFIG = {
     "schema": "http",
-    "host": "47.254.42.95",
+    "host": "172.16.1.36",
     "port": 7070,
     "contextPath": "kylin",
     "username": "ADMIN",
@@ -73,7 +73,7 @@ KYLIN_CUBE_LIST_PATH = "api/cubes"
 
 # Build cube
 # PUT: data: {"buildType":"BUILD","startTime":1519862400000,"endTime":1521072000000}
-KYLIN_CUBE_BUILD_PATH = "api/cubes/{cubeName}/rebuild"
+KYLIN_CUBE_BUILD_PATH = "api/cubes/{cubeName}/build"
 
 ##############
 # JOB REST

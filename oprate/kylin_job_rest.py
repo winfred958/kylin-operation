@@ -90,7 +90,8 @@ class KylinJobRest(KylinBaseRest):
             "limit": 15,
             "offset": 0,
             "projectName": project_name,
-            "cubeName": cube_name
+            "cubeName": cube_name,
+            "timeFilter": 0
         }
         # 设置请求参数
         self.set_config(
